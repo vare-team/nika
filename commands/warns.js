@@ -1,5 +1,5 @@
 module.exports.run = async (client, msg, args) => {
-	let memberInfo = msg.mentions.users.first() || msg.guild.members.get(args[1]) || msg.author;
+	let memberInfo = msg.mentions.users.first() || (msg.guild.members.get(args[0]) ? msg.guild.members.get(args[0]).user : msg.author);
 
 	let result = await client.userLib.promise(client.userLib.db, client.userLib.db.queryValue, 'SELECT warns FROM blacklist WHERE id = ?', [memberInfo.id]);
 

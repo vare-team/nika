@@ -1,4 +1,4 @@
-module.exports.run = async(client, msg, args) => {
+module.exports.run = async (client, msg, args) => {
 
 	let result = (await client.userLib.promise(client.userLib.db, client.userLib.db.query, 'SELECT date, channelName, msgContent, serverId FROM nikaLogs WHERE authorId = ? ORDER BY date', [args[0]])).res;
 	let user = await client.fetchUser(args[0]);
@@ -17,7 +17,7 @@ module.exports.run = async(client, msg, args) => {
 	let x = 1;
 	for (var i of result) {
 		// embed.addField(`${i.date.getHours() < 10 ? `0${i.date.getHours()}`}:${i.date.getHours()}:${i.date.getMinutes() < 10 ? `0${i.date.getMinutes()}`}:${i.date.getMinutes()}:${i.date.getSeconds() < 10 ? `0${i.date.getSeconds()}`}:${i.date.getSeconds()}, ${i.date.getDate()}.${i.date.getMonth()+1 < 10 ? `0${i.date.getMonth()+1}`}:${i.date.getMonth()+1}.${i.date.getFullYear()}`, 'asd')
-		embed.addField("Предупреждение #" + x, `Дата: \`\`${i.date}\`\`\nСервер: \`\`${client.guilds.get(i.serverId).name}\`\`\nКанал: \`\`#${i.channelName}\`\`\nСообщение: \`\`${i.msgContent}\`\``)
+		embed.addField("Предупреждение #" + x, `Дата: \`\`${i.date}\`\`\nСервер: \`\`${i.guildName}\`\`\nКанал: \`\`#${i.channelName}\`\`\nСообщение: \`\`${i.msgContent}\`\``)
 		x++;
 	};
 
@@ -25,6 +25,6 @@ module.exports.run = async(client, msg, args) => {
 }
 
 module.exports.help = {
-  tier: 2,
+  tier: 3,
   args: 1
 }

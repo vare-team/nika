@@ -2,7 +2,7 @@ let check = require('./messageUpdate.js');
 
 let  checkPerm = (admins, tier, ownerID, member) => {
 	if (admins.hasOwnProperty(member.id) && admins[member.id] == 0) return true;
-	if (admins.hasOwnProperty(member.id) && tier < 0 && tier > admins[member.id]) return true;
+	if (admins.hasOwnProperty(member.id) && tier > 0 && tier > admins[member.id]) return true;
 	if (tier == -3 && (ownerID == member.id)) return true;
 	if (tier == -2 && member.hasPermission('ADMINISTRATOR')) return true;
 	if (tier == -1 && member.hasPermission('MANAGE_MESSAGES')) return true;      
@@ -20,7 +20,7 @@ module.exports = async (client, msg) => {
 	if (!cmd) return;
 
 	if (cmd.help.tier && !checkPerm(client.userLib.admins, cmd.help.tier, msg.guild.ownerID, msg.member)) {
-		msg.reply(client.userLib.langf[msg.flag].errPerm);
+		// msg.reply(client.userLib.langf[msg.flag].errPerm);
 		return;
 	}
 

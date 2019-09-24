@@ -54,7 +54,7 @@ module.exports = async (client, oldmsg, newmsg) => {
 		newmsg.channel.send(client.userLib.langf[newmsg.flag].msgNoInvitePubl.replace('%author', newmsg.author)).then(newmsgd => newmsgd.delete(10000));
 		newmsg.delete().catch(() => {});
 
-		if (client.userLib.isInvite(newmsg.content)) client.userLib.db.insert('nikaLogs', {date: new Date(), msgId: newmsg.id, channelId: newmsg.channel.id, serverId: newmsg.guild.id, channelName: newmsg.channel.name, msgContent: newmsg.content, authorId: newmsg.author.id, authorName: newmsg.author.tag}, () => {});
+		if (client.userLib.isInvite(newmsg.content)) client.userLib.db.insert('nikaLogs', {date: new Date(), msgId: newmsg.id, channelId: newmsg.channel.id, serverId: newmsg.guild.id, serverName: newmsg.guild.name, channelName: newmsg.channel.name, msgContent: newmsg.content, authorId: newmsg.author.id, authorName: newmsg.author.tag}, () => {});
 
 		return 1;
 	}
