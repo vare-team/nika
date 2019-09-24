@@ -18,7 +18,7 @@ client.userLib.langf = require('./lang');
 client.userLib.promise = require('/root/site/modules/promise');
 client.userLib.presenseCount = 1;
 
-client.userLib.logc = new Discord.WebhookClient("578886721941274625" ,"n57glScjqzPWTjdMLpDY-xor008M4jK26ps0pfuk6eRAb6r_gGDcxMcvp_tON9DdzZ37");
+client.userLib.logc = new Discord.WebhookClient(process.env.whlogcchan, process.env.whlogctoken);
 
 client.userLib.sendlog = (log) => {
 	const now = new Date();
@@ -88,7 +88,7 @@ fs.readdir("./commands/", (err, files) => {
 client.login(process.env.token);
 
 const DBL = require("dblapi.js")
-		, dbl = new DBL('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU0Mzg1ODMzMzU4NTUwNjMxNSIsImJvdCI6dHJ1ZSwiaWF0IjoxNTUyMjM4OTkyfQ.GviW9wRBRDiVAwcdJfLte6NI1vp-fmfP38mmqyq6tN4', client);
+		, dbl = new DBL(process.env.bdl, client);
 
 dbl.on('posted', () => {
 	console.log('Server count posted!');
