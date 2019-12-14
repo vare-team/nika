@@ -1,5 +1,5 @@
 exports.help = {
-	flag: 2,
+	tier: 2,
 	args: 0
 }
 

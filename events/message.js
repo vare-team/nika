@@ -5,9 +5,7 @@ let  checkPerm = (admins, tier, ownerID, member) => {
 	if (admins.hasOwnProperty(member.id) && tier > 0 && tier > admins[member.id]) return true;
 	if (tier == -3 && (ownerID == member.id)) return true;
 	if (tier == -2 && member.hasPermission('ADMINISTRATOR')) return true;
-	if (tier == -1 && member.hasPermission('MANAGE_MESSAGES')) return true;      
-
-	return false;
+	return tier == -1 && member.hasPermission('MANAGE_MESSAGES');
 };
 
 module.exports = async (client, msg) => {

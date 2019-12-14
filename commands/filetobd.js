@@ -19,8 +19,8 @@ module.exports.run = async (client, msg, args) => {
 
 	msg.reply('users add!');
 
-}
+};
 
 module.exports.help = {
   tier: 1
-}
+};

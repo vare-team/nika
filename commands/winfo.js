@@ -17,7 +17,7 @@ module.exports.run = async (client, msg, args) => {
 	let x = 1;
 	for (var i of result) {
 		// embed.addField(`${i.date.getHours() < 10 ? `0${i.date.getHours()}`}:${i.date.getHours()}:${i.date.getMinutes() < 10 ? `0${i.date.getMinutes()}`}:${i.date.getMinutes()}:${i.date.getSeconds() < 10 ? `0${i.date.getSeconds()}`}:${i.date.getSeconds()}, ${i.date.getDate()}.${i.date.getMonth()+1 < 10 ? `0${i.date.getMonth()+1}`}:${i.date.getMonth()+1}.${i.date.getFullYear()}`, 'asd')
-		embed.addField("Предупреждение #" + x, `Дата: \`\`${i.date}\`\`\nСервер: \`\`${i.guildName}\`\`\nКанал: \`\`#${i.channelName}\`\`\nСообщение: \`\`${i.msgContent}\`\``)
+		embed.addField("Предупреждение #" + x, `Дата: \`\`${i.date}\`\`\nСервер: \`\`${i.serverId}\`\`\nКанал: \`\`#${i.channelName}\`\`\nСообщение: \`\`${i.msgContent}\`\``)
 		x++;
 	};
 

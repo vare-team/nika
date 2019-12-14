@@ -17,9 +17,9 @@ exports.run = async (client, msg, args) => {
 		temp += msg.guild.members.get(i.id).user.tag+' (ID: '+i.id+') warns: '+i.warns+'\n';
 	}
 	if (temp.length) msg.channel.send(temp+'```');
-}
+};
 
 exports.help = {
 	tier: -2,
 	args: 1
-}
+};

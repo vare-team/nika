@@ -5,7 +5,6 @@ module.exports.run = (client, msg) => {
 	.addField(client.userLib.langf[msg.flag].cmd, client.userLib.langf[msg.flag].cmdMore.replace(/%prefix/g, 'n.'), true)
 	.addField(client.userLib.langf[msg.flag].cmdAbout, client.userLib.langf[msg.flag].cmdAboutMore, true)
 	.addField(client.userLib.langf[msg.flag].deffMode, client.userLib.langf[msg.flag].deffModeMore)
-	.setFooter("With ❤ from server-discord.com")
 
 	msg.channel.send(newsEmbed);
 }

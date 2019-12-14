@@ -50,8 +50,8 @@ module.exports = async (client, oldmsg, newmsg) => {
 
 		if ((warns > 2 && res.level == 'medium') || res.level == 'berserker') newmsg.member.ban(client.userLib.langf[newmsg.flag].banSpam).catch(() => {});
 
-		newmsg.author.send(client.userLib.langf[newmsg.flag].msgNoInvite + warns).catch(() => {});
-		newmsg.channel.send(client.userLib.langf[newmsg.flag].msgNoInvitePubl.replace('%author', newmsg.author)).then(newmsgd => newmsgd.delete(10000));
+		newmsg.author.send((res.url ? client.userLib.langf[newmsg.flag].msgNoLinks : client.userLib.langf[newmsg.flag].msgNoInvite) + warns).catch(() => {});
+		newmsg.channel.send((res.url ? client.userLib.langf[newmsg.flag].msgNoLinksPubl : client.userLib.langf[newmsg.flag].msgNoInvitePubl).replace('%author', newmsg.author)).then(newmsgd => newmsgd.delete(10000));
 		newmsg.delete().catch(() => {});
 
 		if (client.userLib.isInvite(newmsg.content)) client.userLib.db.insert('nikaLogs', {date: new Date(), msgId: newmsg.id, channelId: newmsg.channel.id, serverId: newmsg.guild.id, serverName: newmsg.guild.name, channelName: newmsg.channel.name, msgContent: newmsg.content, authorId: newmsg.author.id, authorName: newmsg.author.tag}, () => {});
