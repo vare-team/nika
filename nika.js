@@ -15,7 +15,7 @@ client.userLib = {};
 client.userLib.discord = Discord;
 client.userLib.db = con;
 client.userLib.langf = require('./lang');
-client.userLib.promise = require('./promise');
+client.userLib.promise = require('../SDCBotsModules/promise');
 client.userLib.request = require('request');
 client.userLib.presenseCount = 1;
 
