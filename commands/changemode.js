@@ -11,8 +11,8 @@ module.exports.run = async(client, msg, args) => {
 
 	client.userLib.db.update('nika_server', {id: msg.guild.id, level: args[0]}, () => {});
 
-	let embed = new client.userLib.discord.RichEmbed()
-		.setAuthor(msg.guild.name, msg.guild.iconURL)
+	let embed = new client.userLib.discord.MessageEmbed()
+		.setAuthor(msg.guild.name, msg.guild.iconURL())
 		.setTitle(client.userLib.langf[msg.flag].modeChanged)
 		.addField(client.userLib.langf[msg.flag].mode, client.userLib.langf[msg.flag].modeName[args[0]], true)
 		.addField(`${client.userLib.langf[msg.flag].aMode} "${client.userLib.langf[msg.flag].modeName[args[0]]}":`, client.userLib.langf[msg.flag].modeMore[args[0]], true)

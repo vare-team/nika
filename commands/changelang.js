@@ -7,8 +7,8 @@ module.exports.run = async(client, msg, args) => {
 
 	client.userLib.db.update('nika_server', {id: msg.guild.id, lang: args[0]}, () => {});
 
-	let embed = new client.userLib.discord.RichEmbed()
-		.setAuthor(msg.guild.name, msg.guild.iconURL)
+	let embed = new client.userLib.discord.MessageEmbed()
+		.setAuthor(msg.guild.name, msg.guild.iconURL())
 		.setTitle(client.userLib.langf[msg.flag].langChanged)
 		.addField(client.userLib.langf[msg.flag].lang, args[0], true)
 		.setColor('#7289DA');

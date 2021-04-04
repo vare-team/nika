@@ -7,7 +7,7 @@ module.exports = async (client, oldmsg, newmsg) => {
 	res = res.res;
 	newmsg.flag = res.lang;
 
-	if (!newmsg.member) newmsg.member = await newmsg.guild.fetchMember(newmsg.author);
+	if (!newmsg.member) newmsg.member = await newmsg.guild.members.fetch(newmsg.author.id);
 	if (warns > 2 && (res.level == 'berserker' || res.level == 'medium')) newmsg.member.ban(client.userLib.langf[newmsg.flag].banSpam).catch(() => {});
 
 	if (client.userLib.isInvite(newmsg.content)) {
@@ -23,10 +23,10 @@ module.exports = async (client, oldmsg, newmsg) => {
 											 || newmsg.member.hasPermission('MOVE_MEMBERS'    )
 											 || newmsg.member.hasPermission('MANAGE_NICKNAMES')
 												 )) return 1;
-		if (newmsg.member && newmsg.member.roles.has(res.role)) return 1;
+		// if (newmsg.member && newmsg.member.roles.cache.has(res.role)) return 1;
 		if (client.userLib.isInvite(newmsg.content) && await client.userLib.inviteGuild(newmsg.content, newmsg.guild.id)) return 1;
 
-		let embed = new client.userLib.discord.RichEmbed()
+		let embed = new client.userLib.discord.MessageEmbed()
 		.setAuthor('Обнаружена попытка спама!')
 		.setTitle("Сообщение:")
 		.setDescription(newmsg.content)
@@ -45,10 +45,9 @@ module.exports = async (client, oldmsg, newmsg) => {
 		if ((warns > 2 && res.level == 'medium') || res.level == 'berserker') newmsg.member.ban(client.userLib.langf[newmsg.flag].banSpam).catch(() => {});
 
 		newmsg.author.send(client.userLib.langf[newmsg.flag].msgNoInvite + warns).catch(() => {});
-		newmsg.channel.send(client.userLib.langf[newmsg.flag].msgNoInvitePubl.replace('%author', newmsg.author)).then(newmsgd => newmsgd.delete(10000));
+		newmsg.channel.send(client.userLib.langf[newmsg.flag].msgNoInvitePubl.replace('%author', newmsg.author)).then(newmsgd => newmsgd.delete({timeout: 10000}));
 		newmsg.delete().catch(() => {});
 
-		client.userLib.db.insert('nikaLogs', {date: new Date(), msgId: newmsg.id, channelId: newmsg.channel.id, serverId: newmsg.guild.id, serverName: newmsg.guild.name, channelName: newmsg.channel.name, msgContent: newmsg.content, authorId: newmsg.author.id, authorName: newmsg.author.tag}, () => {});
 		return 1;
 	}
 

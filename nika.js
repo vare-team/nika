@@ -2,8 +2,9 @@ const Discord = require('discord.js')
 		, client = new Discord.Client()
 		, fs = require('fs')
 		;
+const axios = require('axios').default;
 
-let con = require('mysql2').createConnection({user: process.env.dblogin, password: process.env.dbpass, database: "discord", charset: "utf8mb4"});
+let con = require('mysql2').createConnection({user: process.env.dblogin, password: process.env.dbpass, host: process.env.dbhost, database: "discord", charset: "utf8mb4"});
 con.on('error', (err) => {console.warn(err)});
 con.connect(() => {client.userLib.sendlog(`{DB Connected} (ID:${con.threadId})`);});
 let util = require('mysql-utilities');
@@ -16,29 +17,28 @@ client.userLib.discord = Discord;
 client.userLib.db = con;
 client.userLib.langf = require('./lang');
 client.userLib.promise = require('../SDCBotsModules/promise');
-client.userLib.request = require('request');
 client.userLib.presenseCount = 1;
 
 client.userLib.logc = new Discord.WebhookClient(process.env.whlogcchan, process.env.whlogctoken);
 
 client.userLib.sendlog = (log) => {
 	const now = new Date();
-	console.log(`${('00' + now.getHours()).slice(-2) + ':' + ('00' + now.getMinutes()).slice(-2) + ':' + ('00' + now.getSeconds()).slice(-2)} | Shard[${client.shard.id}] : ${log}`);
+	console.log(`${('00' + now.getHours()).slice(-2) + ':' + ('00' + now.getMinutes()).slice(-2) + ':' + ('00' + now.getSeconds()).slice(-2)} | ${log}`);
 };
 
 client.userLib.presenseFunc = async () => {
 	switch (client.userLib.presenseCount) {
 		case 0:
-		  await client.user.setPresence({game: {name: `за порядком | n.help`, type: 'WATCHING'}});
+		  await client.user.setPresence({activity: {name: `за порядком | n.help`, type: 'WATCHING'}});
 		  break;
 		case 1:
-			client.shard.fetchClientValues('guilds.size').then(results => {client.user.setPresence({ game: { name: `серверов: ${results.reduce((prev, val) => prev + val, 0)} | n.help`, type: 'WATCHING' }});});
+			client.shard.fetchClientValues('guilds.cache.size').then(results => {client.user.setPresence({ activity: { name: `серверов: ${results.reduce((prev, val) => prev + val, 0)} | n.help`, type: 'WATCHING' }});});
 			break;
 		case 2:
-			await client.user.setPresence({game: {name: `в ЧС: ${(await client.userLib.promise(client.userLib.db, client.userLib.db.queryValue, `SELECT COUNT(*) FROM blacklist WHERE type = 'user' AND warns > 2`)).res} | n.help`, type: 'WATCHING'}});
+			await client.user.setPresence({activity: {name: `в ЧС: ${(await client.userLib.promise(client.userLib.db, client.userLib.db.queryValue, `SELECT COUNT(*) FROM blacklist WHERE type = 'user' AND warns > 2`)).res} | n.help`, type: 'WATCHING'}});
 			break;
 		case 3:
-			await client.user.setPresence({game: {name: `n.help | n.info | n.invite`, type: 'LISTENING'}});
+			await client.user.setPresence({activity: {name: `n.help | n.info | n.invite`, type: 'LISTENING'}});
 			client.userLib.presenseCount = 0;
 			break;
 	}
@@ -62,7 +62,7 @@ client.userLib.inviteGuild = async (msg, id) => {
 };
 
 client.userLib.sendSDC = (servers, shards) => {
-	client.userLib.request.post({url: 'https://api.server-discord.com/v2/bots/'+client.user.id+'/stats', form: {servers, shards}, headers: {'Authorization':'SDC '+process.env.sdc}});
+	axios({ method: 'POST', url: 'https://api.server-discord.com/v2/bots/'+client.user.id+'/stats', data: {servers, shards}, headers: {authorization:'SDC '+process.env.sdc}});
 	client.userLib.sendlog('{SDC} Send stats data');
 };
 

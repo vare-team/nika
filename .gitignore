@@ -1,4 +1,4 @@
-node_modules
-package-lock.json
+.idea
+**/node_modules
 .floo
 .flooignore

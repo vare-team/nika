@@ -6,7 +6,7 @@ exports.help = {
 exports.run = async (client, msg) => {
 	msg.channel.startTyping();
 
-	let res = await client.shard.broadcastEval(`[ ...this.guilds.keys() ]`);
+	let res = await client.shard.broadcastEval(`[ ...this.guilds.cache.keys() ]`);
 	let temp = [];
 	for (var i = 0, length = client.shard.count; i < length; i++) temp.push(...res[i]);
 	res = temp;
@@ -17,7 +17,7 @@ exports.run = async (client, msg) => {
 		console.log(result);
 		for (var i of result) {
 			client.userLib.db.insert('nika_server', {id: i}, () => {})
-			temp += 'no in db: ' + i + ' ' + (await client.shard.broadcastEval(`this.guilds.get('${i}') ? this.guilds.get('${i}').name : 0`)).find(l => l) + '\n';
+			temp += 'no in db: ' + i + ' ' + (await client.shard.broadcastEval(`this.guilds.cache.get('${i}') ? this.guilds.cache.get('${i}').name : 0`)).find(l => l) + '\n';
 		}
 		msg.channel.send(temp).catch(() => msg.channel.send('Серверов нет'));
 	});
