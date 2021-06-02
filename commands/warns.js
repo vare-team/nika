@@ -17,7 +17,7 @@ module.exports.run = async (client, msg, args) => {
 	embed = new client.userLib.discord.RichEmbed()
 		.setColor('#FF0000')
 		.setTitle(client.userLib.langf[msg.flag].warns)
-		.setDescription(`${client.userLib.langf[msg.flag].warnsCount} **${result.res}**.`)
+		.setDescription(`${client.userLib.langf[msg.flag].warnsCount} **${result.res}**.\n:warning: https://sdc.su/form`)
 		.setTimestamp()
 		.setFooter(memberInfo.tag, memberInfo.displayAvatarURL);
 
