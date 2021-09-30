@@ -5,12 +5,11 @@ function clean(text) {
     return text;
 }
 
-const os = require('os')
-    , fs = require('fs')
-    , { PerformanceObserver, performance } = require('perf_hooks')
-    , master = '166610390581641217'
-    , mega = '321705723216134154'
-    ;
+const os = require('os'),
+    fs = require('fs'),
+    { PerformanceObserver, performance } = require('perf_hooks'),
+    master = '166610390581641217',
+    mega = '321705723216134154';
 
 exports.help = {
 	tier: 1,
