@@ -1,35 +1,41 @@
-module.exports.run = async (client, msg, args) => {
+import dataBase from '../services/dataBase';
+import { MessageEmbed } from 'discord.js';
+import texts from '../models/texts';
+import colors from '../models/colors';
 
-	let object;
-	if (/([0-9]){17,18}/.test(args[0])) object = await client.users.fetch(args[0]).catch(() => 0);
+export const commandObject = {
+	name: 'warns',
+	description: 'The count of warnings',
+	options: [
+		{
+			name: 'user',
+			description: 'The count of user warnings',
+			type: 6,
+			required: false,
+		},
+	],
+};
 
+export async function run(interaction) {
+	const member = interaction.options.getMember('user') ?? interaction.member;
+	const warns = await dataBase.one('SELECT warns FROM blacklist WHERE id = ?', [member.id]);
 
-	let memberInfo = msg.mentions.users.first() || object || msg.author;
+	const embed = new MessageEmbed()
+		.setColor(colors.green)
+		.setTitle(texts[interaction.guildSettings.lang].warns)
+		.setDescription(texts[interaction.guildSettings.lang].warnsNo.replace('{member}', member.user.tag));
 
-	let result = await client.userLib.promise(client.userLib.db, client.userLib.db.queryValue, 'SELECT warns FROM blacklist WHERE id = ?', [memberInfo.id]);
+	if (!warns) return interaction.reply(embed);
 
-	if (!result.res) {
-		let embed = new client.userLib.discord.MessageEmbed()
-			.setColor('#00FF00')
-			.setTitle(client.userLib.langf[msg.flag].warns)
-			.setDescription(client.userLib.langf[msg.flag].warnsNo.replace("{member}", memberInfo.tag))
-			.setTimestamp()
-			.setFooter(memberInfo.tag, memberInfo.displayAvatarURL());
-		msg.channel.send(embed);
-		return;
-	}
+	embed
+		.setColor(colors.red)
+		.setTitle(texts[interaction.guildSettings.lang].warns)
+		.setDescription(`${texts[interaction.guildSettings.lang].warnsCount} **${warns.warns}**`);
 
-	let embed = new client.userLib.discord.MessageEmbed()
-		.setColor('#FF0000')
-		.setTitle(client.userLib.langf[msg.flag].warns)
-		.setDescription(`${client.userLib.langf[msg.flag].warnsCount} **${result.res}**.`)
-		.setTimestamp()
-		.setFooter(memberInfo.tag, memberInfo.displayAvatarURL());
-
-	msg.channel.send(embed);
+	interaction.reply(embed);
 }
 
-module.exports.help = {
-	tier: 0,
-	args: 0
-}
+export default {
+	commandObject,
+	run,
+};

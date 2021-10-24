@@ -1,19 +1,35 @@
-module.exports.run = async (client, msg, args) => {
-	let result = await client.userLib.promise(client.userLib.db, client.userLib.db.queryValue, 'SELECT level FROM nika_server WHERE id = ?', [msg.guild.id]);
+import colors from '../models/colors';
+import { MessageEmbed } from 'discord.js';
+import texts from '../models/texts';
 
-	let embed = new client.userLib.discord.MessageEmbed()
-		.setAuthor(msg.guild.name, msg.guild.iconURL())
-		.setDescription(client.userLib.langf[msg.flag].botInfo)
-		.addField(client.userLib.langf[msg.flag].modeInfo, client.userLib.langf[msg.flag].modeName[result.res], true)
-		.addField(`${client.userLib.langf[msg.flag].aMode} "${client.userLib.langf[msg.flag].modeName[result.res]}"`, client.userLib.langf[msg.flag].modeMore[result.res], true)
-		.setFooter(client.userLib.langf[msg.flag].guildCreated)
-		.setTimestamp(new Date(msg.guild.createdTimestamp))
-		.setColor('#7289DA');
-
-	msg.channel.send(embed);
+export const commandObject = {
+	name: 'help',
+	description: 'Information about bot settings',
 };
 
-module.exports.help = {
-	tier: 0,
-	args: 0
+export function run(interaction) {
+	const embed = new MessageEmbed()
+		.setAuthor(interaction.guild.name, interaction.guild.iconURL())
+		.setDescription(texts[interaction.guildSettings.lang].botInfo)
+		.addField(
+			texts[interaction.guildSettings.lang].modeInfo,
+			texts[interaction.guildSettings.lang].modeName[interaction.guildSettings.level],
+			true
+		)
+		.addField(
+			`${texts[interaction.guildSettings.lang].aMode} "${
+				texts[interaction.guildSettings.lang].modeName[interaction.guildSettings.level]
+			}"`,
+			texts[interaction.guildSettings.lang].modeMore[interaction.guildSettings.level],
+			true
+		)
+		.setFooter(texts[interaction.guildSettings.lang].guildCreated)
+		.setColor(colors.blue);
+
+	interaction.reply(embed);
+}
+
+export default {
+	commandObject,
+	run,
 };

@@ -1,15 +1,31 @@
-module.exports.run = (client, msg) => {
-	let newsEmbed = new client.userLib.discord.MessageEmbed()
-	.setAuthor(client.userLib.langf[msg.flag].cmdList.replace('%author', client.user.tag), client.user.displayAvatarURL())
-	.setColor("#15f153")
-	.addField(client.userLib.langf[msg.flag].cmd, client.userLib.langf[msg.flag].cmdMore.replace(/%prefix/g, 'n.'), true)
-	.addField(client.userLib.langf[msg.flag].cmdAbout, client.userLib.langf[msg.flag].cmdAboutMore, true)
-	.addField(client.userLib.langf[msg.flag].deffMode, client.userLib.langf[msg.flag].deffModeMore)
+import { MessageEmbed } from 'discord.js';
+import texts from '../models/texts';
+import colors from '../models/colors';
 
-	msg.channel.send(newsEmbed);
+export const commandObject = {
+	name: 'help',
+	description: 'Information about bot',
+};
+
+export function run(interaction) {
+	let newsEmbed = new MessageEmbed()
+		.setAuthor(
+			texts[interaction.guildSettings.lang].cmdList.replace('%author', discordClient.user.tag),
+			discordClient.user.displayAvatarURL()
+		)
+		.setColor(colors.blue)
+		.addField(
+			texts[interaction.guildSettings.lang].cmd,
+			texts[interaction.guildSettings.lang].cmdMore.replace(/%prefix/g, '/'),
+			true
+		)
+		.addField(texts[interaction.guildSettings.lang].cmdAbout, texts[interaction.guildSettings.lang].cmdAboutMore, true)
+		.addField(texts[interaction.guildSettings.lang].deffMode, texts[interaction.guildSettings.lang].deffModeMore);
+
+	interaction.reply(newsEmbed);
 }
- 
-module.exports.help = {
-	tier: 0,
-	args: 0
-}
+
+export default {
+	commandObject,
+	run,
+};

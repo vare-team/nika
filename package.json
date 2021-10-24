@@ -1,22 +1,38 @@
 {
-  "name": "nika",
-  "version": "3.1.5",
-  "license": "MIT",
-  "author": "SDC (https://server-discord.com/)",
-  "main": "nika.js",
-  "private": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MegaVasiliy007/nika.git"
-  },
-  "dependencies": {
-    "dblapi.js": "^2.4.1",
-    "discord.js": "^12.5.3",
-    "mysql-utilities": "^1.1.2",
-    "mysql2": "^2.2.5",
-    "axios": "^0.21.1"
-  },
-  "scripts": {
-    "debug": "node ."
-  }
+	"name": "nika",
+	"version": "4.0.0",
+	"license": "MIT",
+	"author": "Vare (https://vare.pw/)",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"start": "node --unhandled-rejections=warn --experimental-specifier-resolution=node .",
+		"debug": "nodemon --unhandled-rejections=warn --experimental-specifier-resolution=node ."
+	},
+	"engines": {
+		"node": ">=16"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vare-team/nika.git"
+	},
+	"dependencies": {
+		"dblapi.js": "^2.4.1",
+		"discord.js": "^13.2.0",
+		"mysql2": "^2.3.0",
+		"axios": "^0.23.0"
+	},
+	"devDependencies": {
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.1",
+		"nodemon": "^2.0.12",
+		"prettier": "^2.3.2"
+	},
+	"optionalDependencies": {
+		"bufferutil": "^4.0.3",
+		"erlpack": "github:discord/erlpack",
+		"utf-8-validate": "^5.0.5",
+		"zlib-sync": "^0.1.7"
+	}
 }

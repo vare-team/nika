@@ -1,21 +1,45 @@
-module.exports.run = async(client, msg, args) => {
-	args[0] = args[0].toLowerCase();
-	if(['ru', 'en'].indexOf(args[0]) == -1) {
-		msg.reply(client.userLib.langf[msg.flag].errLang1 + `**en**, **ru**`);
-		return;
-	}
+import { MessageEmbed } from 'discord.js';
+import colors from '../models/colors';
+import texts from '../models/texts';
+import dataBase from '../services/dataBase';
 
-	client.userLib.db.update('nika_server', {id: msg.guild.id, lang: args[0]}, () => {});
+export const commandObject = {
+	name: 'changelang',
+	description: 'Change bot language',
+	options: [
+		{
+			name: 'language',
+			description: 'bot language',
+			type: 3,
+			required: true,
+			choices: [
+				{
+					name: 'English',
+					value: 'en',
+				},
+				{
+					name: 'Russian',
+					value: 'ru',
+				},
+			],
+		},
+	],
+};
 
-	let embed = new client.userLib.discord.MessageEmbed()
-		.setAuthor(msg.guild.name, msg.guild.iconURL())
-		.setTitle(client.userLib.langf[msg.flag].langChanged)
-		.addField(client.userLib.langf[msg.flag].lang, args[0], true)
-		.setColor('#7289DA');
-	msg.channel.send(embed);
+export async function run(interaction) {
+	const newLanguage = interaction.options.getString('language');
+
+	await dataBase.query(`UPDATE nika_server SET lang = ? WHERE id = ?`, [newLanguage, interaction.guildId]); //TODO: Перепроверить это
+
+	let embed = new MessageEmbed()
+		.setAuthor(interaction.guild.name, interaction.guild.iconURL())
+		.setTitle(texts[newLanguage].langChanged)
+		.addField(texts[newLanguage].lang, newLanguage, true)
+		.setColor(colors.blue);
+	interaction.reply(embed);
 }
 
-module.exports.help = {
-	tier: -2,
-	args: 1
-}
+export default {
+	commandObject,
+	run,
+};

@@ -1,8 +1,16 @@
-module.exports = async (client) => {
-	setInterval(client.userLib.presenseFunc, 30000);
-	client.userLib.sendlog(`{READY}`);
-	if (client.shard.id == 0) {
-		client.userLib.sendSDC((await client.shard.fetchClientValues('guilds.cache.size')).reduce((prev, val) => prev + val, 0), client.shard.count);
-		setInterval(async () => client.userLib.sendSDC((await client.shard.fetchClientValues('guilds.cache.size')).reduce((prev, val) => prev + val, 0), client.shard.count), 30 * 60 * 1e3);
-	}
-};
+import log from '../utils/log';
+import guildCreateEvent from './guildCreate';
+import guildDeleteEvent from './guildDelete';
+import interactionCreateEvent from './interactionCreate';
+
+export default function () {
+	discordClient.on('interactionCreate', interactionCreateEvent);
+
+	discordClient.on('guildCreate', guildCreateEvent);
+	discordClient.on('guildDelete', guildDeleteEvent);
+
+	discordClient.on('messageCreate', guildDeleteEvent);
+	discordClient.on('messageUpdate', guildDeleteEvent);
+
+	log('Shard is ready!');
+}

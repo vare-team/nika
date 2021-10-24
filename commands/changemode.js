@@ -1,26 +1,54 @@
-let rusMode = {'низкий': 'low', 'средний': 'medium', 'берсеркер': 'berserker'};
+import { MessageEmbed } from 'discord.js';
+import colors from '../models/colors';
+import texts from '../models/texts';
+import dataBase from '../services/dataBase';
 
-module.exports.run = async(client, msg, args) => {
-	args[0] = args[0].toLowerCase();
-	if (['низкий', 'средний', 'берсеркер', 'low', 'medium', 'berserker'].indexOf(args[0]) == -1) {
-		msg.reply(client.userLib.langf[msg.flag].errMode1 + `**${client.userLib.langf[msg.flag].modeName.low}**, **${client.userLib.langf[msg.flag].modeName.medium}**, **${client.userLib.langf[msg.flag].modeName.berserker}**`);
-		return;
-	}
+export const commandObject = {
+	name: 'changemode',
+	description: 'Change moderation mode',
+	options: [
+		{
+			name: 'mode',
+			description: 'moderation mode',
+			type: 3,
+			required: true,
+			choices: [
+				{
+					name: 'Low',
+					value: 'low',
+				},
+				{
+					name: 'Medium',
+					value: 'medium',
+				},
+				{
+					name: 'Berserker',
+					value: 'berserker',
+				},
+			],
+		},
+	],
+};
 
-	args[0] = rusMode.hasOwnProperty(args[0]) ? rusMode[args[0]] : args[0];
+export async function run(interaction) {
+	const newMode = interaction.options.getString('mode');
 
-	client.userLib.db.update('nika_server', {id: msg.guild.id, level: args[0]}, () => {});
+	await dataBase.query(`UPDATE nika_server SET level = ? WHERE id = ?`, [newMode, interaction.guildId]); //TODO: Перепроверить это
 
-	let embed = new client.userLib.discord.MessageEmbed()
-		.setAuthor(msg.guild.name, msg.guild.iconURL())
-		.setTitle(client.userLib.langf[msg.flag].modeChanged)
-		.addField(client.userLib.langf[msg.flag].mode, client.userLib.langf[msg.flag].modeName[args[0]], true)
-		.addField(`${client.userLib.langf[msg.flag].aMode} "${client.userLib.langf[msg.flag].modeName[args[0]]}":`, client.userLib.langf[msg.flag].modeMore[args[0]], true)
-		.setColor('#7289DA');
-	msg.channel.send(embed)
+	const embed = new MessageEmbed()
+		.setAuthor(interaction.guild.name, interaction.guild.iconURL())
+		.setTitle(texts[interaction.guildSettings.lang].modeChanged)
+		.addField(texts[interaction.guildSettings.lang].mode, texts[interaction.guildSettings.lang].modeName[newMode], true)
+		.addField(
+			`${texts[interaction.guildSettings.lang].aMode} "${texts[interaction.guildSettings.lang].modeName[newMode]}":`,
+			texts[interaction.guildSettings.lang].modeMore[newMode],
+			true
+		)
+		.setColor(colors.blue);
+	interaction.reply(embed);
 }
 
-module.exports.help = {
-	tier: -2,
-	args: 1
-}
+export default {
+	commandObject,
+	run,
+};
