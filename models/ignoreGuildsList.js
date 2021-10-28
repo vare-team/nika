@@ -4,6 +4,7 @@ export default [
 	'81384788765712384', //  discord-api
 	'169256939211980800', // discord-townhall
 	'831646372519346186', // discordgameslab
+	'118456055842734083', // discord gophers
 	'336642139381301249', // dpy
 	'222078108977594368', // djs
 	'669961614434500620', // (VARE Community)
