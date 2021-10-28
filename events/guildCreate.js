@@ -1,4 +1,8 @@
-module.exports = (client, guild) => {
-	client.userLib.db.insert(`nika_server`, {id: guild.id, lang: guild.region == 'russia' ? 'ru' : 'en'}, () => {});
- 	client.userLib.sendlog(`Новый сервер "${guild.name}" с ${guild.memberCount} человек`)
-};
+import db from '../services/db';
+
+export default async function (guild) {
+	await db.query('INSERT INTO nika_server(id, lang) VALUE (?, ?)', [
+		guild.id,
+		guild.preferredLocale === 'ru' ? 'ru' : 'en',
+	]);
+}

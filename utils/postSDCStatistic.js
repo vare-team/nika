@@ -1,12 +1,14 @@
-import axios from 'axios';
-import sendLog from '../utils/log';
+import { default as axios } from 'axios';
+import log from '../utils/log';
 
-export default function (servers, shards) {
-	axios({
-		method: 'POST',
-		url: 'https://api.server-discord.com/v2/bots/' + discordClient.user.id + '/stats',
-		data: { servers, shards },
-		headers: { authorization: 'SDC ' + process.env.sdc },
-	});
-	sendLog('{SDC} Send stats data.');
+const axiosInstance = axios.create({
+	method: 'POST',
+	baseURL: 'https://api.server-discord.com/v2/bots',
+	headers: { authorization: 'SDC ' + process.env.sdc },
+});
+
+export default async function () {
+	const servers = (await discordClient.shard.fetchClientValues('guilds.cache.size')).reduce((p, v) => p + v, 0);
+	axiosInstance({ url: discordClient.user.id + '/stats', data: { servers, shards: discordClient.shard.count } });
+	log('{SDC} Send stats data.');
 }

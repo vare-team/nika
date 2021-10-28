@@ -1,19 +1,21 @@
-module.exports = async (client, member) => {
+import db from '../services/db';
+import texts from '../models/texts';
+import isInvite from '../utils/getInvite';
+
+export default async function (member) {
 	if (member.user.bot) return;
 
-	let warns = await client.userLib.promise(client.userLib.db, client.userLib.db.count, 'SELECT warns FROM blacklist WHERE id = ? AND warns > 2', [member.id]);
-  warns = warns.res ? warns.res : 0;
+	const [warns, guildSettings] = await Promise.all([
+		db.one('SELECT warns FROM blacklist WHERE id = ? AND warns > 2', [member.id]),
+		db.one('SELECT level, lang FROM nika_server WHERE id = ?', [member.guild.id]),
+	]);
 
-  let res = await client.userLib.promise(client.userLib.db, client.userLib.db.queryRow, 'SELECT level, lang FROM nika_server WHERE id = ?', [member.guild.id]);
-  res = res.res;
+	if (warns && (guildSettings.level === 'berserker' || guildSettings.level === 'medium')) {
+		member.ban(texts[guildSettings.lang].banSpam).catch(() => {});
+		return;
+	}
 
-  if (warns && (res.level == 'berserker' || res.level == 'medium')) {
-  	member.ban(client.userLib.langf[res.lang].banSpam).catch(() => {});
-  	return;
-  }
-
-	if (!client.userLib.isInvite(member.user.username) || !member.guild.member(client.user).hasPermission('MANAGE_NICKNAMES')) return;
-
-  member.send(client.userLib.langf[res.lang].nickUrl)
-  member.setNickname("Nick_URL");
-};
+	if (!isInvite(member.user.username) || !member.guild.me?.permissions.has('MANAGE_NICKNAMES')) return;
+	member.send(texts[guildSettings.lang].nickUrl);
+	await member.setNickname('URL_in_Nickname');
+}

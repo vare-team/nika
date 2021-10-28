@@ -1,7 +1,7 @@
 import { MessageEmbed } from 'discord.js';
 import colors from '../models/colors';
 import texts from '../models/texts';
-import dataBase from '../services/dataBase';
+import db from '../services/db';
 
 export const commandObject = {
 	name: 'changemode',
@@ -32,8 +32,7 @@ export const commandObject = {
 
 export async function run(interaction) {
 	const newMode = interaction.options.getString('mode');
-
-	await dataBase.query(`UPDATE nika_server SET level = ? WHERE id = ?`, [newMode, interaction.guildId]); //TODO: Перепроверить это
+	await db.query(`UPDATE nika_server SET level = ? WHERE id = ?`, [newMode, interaction.guildId]);
 
 	const embed = new MessageEmbed()
 		.setAuthor(interaction.guild.name, interaction.guild.iconURL())
@@ -45,6 +44,7 @@ export async function run(interaction) {
 			true
 		)
 		.setColor(colors.blue);
+
 	interaction.reply(embed);
 }
 

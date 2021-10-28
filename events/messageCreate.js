@@ -1,5 +1,5 @@
-let check = require('./messageUpdate.js');
+import check from './messageUpdate.js';
 
-module.exports = async (client, msg) => {
-	if (await check(client, msg, msg)) return;
-};
+export default async function (msg) {
+	await check(null, msg);
+}

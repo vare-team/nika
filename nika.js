@@ -3,6 +3,7 @@ import log from './utils/log';
 import DBLAPI from 'dblapi.js';
 import readyEvent from './events/ready';
 import presenceController from './utils/presenceController';
+import postSDCStatistic from './utils/postSDCStatistic';
 
 const client = new Client({
 	intents: [
@@ -20,7 +21,9 @@ global.discordWebhook = new WebhookClient({ url: process.env.WEBHOOK_URL });
 process.on('message', m => {
 	if (m === 'startPresence') {
 		presenceController();
+		postSDCStatistic();
 		setInterval(presenceController, 30e3);
+		setInterval(postSDCStatistic, 30 * 60e3);
 	}
 });
 
