@@ -1,5 +1,5 @@
-import check from './messageUpdate.js';
+import messageInviteChecker from '../utils/messageInviteChecker';
 
 export default async function (msg) {
-	await check(null, msg);
+	await messageInviteChecker(msg);
 }
