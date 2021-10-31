@@ -36,7 +36,7 @@ export async function run(interaction) {
 		.addField(texts[newLanguage].lang, newLanguage, true)
 		.setColor(colors.blue);
 
-	interaction.reply(embed);
+	interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
 export default {

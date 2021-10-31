@@ -8,12 +8,12 @@ export const commandObject = {
 };
 
 export function run(interaction) {
-	let newsEmbed = new MessageEmbed()
+	let embed = new MessageEmbed()
 		.setColor(colors.blue)
 		.addField(texts[interaction.guildSettings.lang].cmdAbout, texts[interaction.guildSettings.lang].cmdAboutMore, true)
 		.addField(texts[interaction.guildSettings.lang].deffMode, texts[interaction.guildSettings.lang].deffModeMore);
 
-	interaction.reply({ embeds: [newsEmbed], ephemeral: true });
+	interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
 export default {

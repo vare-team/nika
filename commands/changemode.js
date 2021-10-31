@@ -45,7 +45,7 @@ export async function run(interaction) {
 		)
 		.setColor(colors.blue);
 
-	interaction.reply(embed);
+	interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
 export default {

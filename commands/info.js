@@ -27,7 +27,7 @@ export function run(interaction) {
 		.setTimestamp(interaction.guild.createdAt)
 		.setColor(colors.blue);
 
-	interaction.reply(embed);
+	interaction.reply({ embeds: [embed], ephemeral: true });
 }
 
 export default {
