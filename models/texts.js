@@ -14,8 +14,6 @@ export default {
 		aMode: 'О режиме:',
 		errMsg: 'Введите количество сообщений.',
 		cmdList: 'Список комманд %author',
-		cmd: 'Команда',
-		cmdMore: '%prefixchangemode [режим]\n%prefixchangelang [ru | en]\n%prefixwarns\n%prefixinfo\n%prefixinvite',
 		cmdAbout: 'Описание',
 		cmdAboutMore:
 			'**Изменить режим защиты *(Админ)*\nИзменить язык сервера *(Админ)*\nКол-во ваших предупреждений\nИнформация о сервере\nПригласить бота на сервер**',
@@ -75,8 +73,6 @@ export default {
 		aMode: 'About the mode:',
 		errMsg: 'Enter the number of messages.',
 		cmdList: 'The list of %author commands',
-		cmd: 'Command',
-		cmdMore: '%prefixchangemode [mode]\n%prefixchangelang [ru | en]\n%prefixwarns\n%prefixinfo\n%prefixinvite',
 		cmdAbout: 'Description',
 		cmdAboutMore:
 			'**Change protection mode *(Admin)*\nChange server language *(Админ)*\nThe number of your warns\nServer Information\nInvite bot to the server**',
