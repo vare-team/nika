@@ -8,10 +8,10 @@ export const commandObject = {
 };
 
 export function run(interaction) {
-	let embed = new MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor(colors.blue)
-		.addField(texts[interaction.guildSettings.lang].cmdAbout, texts[interaction.guildSettings.lang].cmdAboutMore, true)
-		.addField(texts[interaction.guildSettings.lang].deffMode, texts[interaction.guildSettings.lang].deffModeMore);
+		.setTitle(texts[interaction.guildSettings.lang].deffMode)
+		.setDescription(texts[interaction.guildSettings.lang].deffModeMore);
 
 	interaction.reply({ embeds: [embed], ephemeral: true });
 }

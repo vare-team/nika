@@ -21,5 +21,5 @@ shardManager.on('shardCreate', shard => log(`Shard spawned!`, shard.id));
 	for (let i = 0; i < amount; i++) promises.push(shardManager.createShard(i).spawn(5 * 60e3));
 	const shards = await Promise.all(promises);
 
-	for (const shard of shards) shard.send('startPresence');
+	for (const shard of shards) shard.postMessage('startPresence');
 })();

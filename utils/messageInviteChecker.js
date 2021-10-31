@@ -21,7 +21,7 @@ export default async function (message) {
 		...(message.member ? [Promise.resolve(message.member)] : [message.guild.members.fetch(message.author.id)]),
 	]);
 
-	if (userWarns.warns > 2 && (guildSettings.level === 'berserker' || guildSettings.level === 'medium'))
+	if (userWarns?.warns > 2 && (guildSettings.level === 'berserker' || guildSettings.level === 'medium'))
 		guildMember.ban(texts[guildSettings.lang].banSpam).catch(() => {});
 
 	if (
@@ -54,23 +54,24 @@ export default async function (message) {
 		.setFooter('Время сообщения')
 		.setTimestamp(message.createdAt);
 
-	discordWebhook.send({ embeds: [embed] }).catch(() => log(`${message.author.id} | Не смогла отправить лог`));
+	if (process.env.WEBHOOK_URL)
+		discordWebhook.send({ embeds: [embed] }).catch(() => log(`${message.author.id} | Не смогла отправить лог`));
 
-	userWarns.warns++;
+	const newWarns = (userWarns?.warns ?? 0) + 1;
 
 	await db.query(`INSERT INTO blacklist(id, type, warns) VALUES (?, 'user', ?) ON DUPLICATE KEY UPDATE warns = ?`, [
 		message.author.id,
-		userWarns.warns,
-		userWarns.warns,
+		newWarns,
+		newWarns,
 	]);
 
-	if ((userWarns.warns > 2 && guildSettings.level === 'medium') || guildSettings.level === 'berserker')
+	if ((newWarns > 2 && guildSettings.level === 'medium') || guildSettings.level === 'berserker')
 		guildMember.ban(texts[guildSettings.lang].banSpam).catch(() => {});
 
-	const spammessage = message.channel.send(
-		texts[guildSettings.lang].messageNoInvitePubl.replace('%author', message.author)
+	const spammessage = await message.channel.send(
+		texts[guildSettings.lang].msgNoInvitePubl.replace('%author', message.author)
 	);
-	spammessage.delete({ timeout: 10000 });
-	message.author.send(texts[guildSettings.lang].messageNoInvite + userWarns.warns).catch(() => {});
+	setTimeout(() => spammessage.delete(), 1e4);
+	message.author.send(texts[guildSettings.lang].msgNoInvite + newWarns).catch(() => {});
 	message.delete().catch(() => {});
 }

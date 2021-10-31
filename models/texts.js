@@ -14,12 +14,9 @@ export default {
 		aMode: 'О режиме:',
 		errMsg: 'Введите количество сообщений.',
 		cmdList: 'Список комманд %author',
-		cmdAbout: 'Описание',
-		cmdAboutMore:
-			'**Изменить режим защиты *(Админ)*\nИзменить язык сервера *(Админ)*\nКол-во ваших предупреждений\nИнформация о сервере\nПригласить бота на сервер**',
-		deffMode: 'Режимы защиты:',
+		deffMode: 'Режимы защиты',
 		deffModeMore:
-			'**Низкий**: При нарушении удаляет сообщение и выдаёт 1 предупреждение. При 3 предупреждениях происходит внесение в ЧС.\n\n**Средний**: При нарушении удаляет сообщение и выдаёт 1 предупреждение. При 3 предупреждениях происходит бан на сервере и внесение в ЧС.\n\n**Берсеркер**: При нарушении удаляет сообщение, выдаёт 1 предупреждение и банит на сервере. При 3 предупреждениях внесение в ЧС.',
+			'**Низкий**: При нарушении удаляет сообщение и выдаёт 1 предупреждение. При 3 предупреждениях происходит внесение в ЧС.\n**Средний**: При нарушении удаляет сообщение и выдаёт 1 предупреждение. При 3 предупреждениях происходит бан на сервере и внесение в ЧС.\n**Берсеркер**: При нарушении удаляет сообщение, выдаёт 1 предупреждение и банит на сервере. При 3 предупреждениях внесение в ЧС.',
 		modeInfo: 'Режим, установленный на сервере',
 		linkMode: 'Удалять все ссылки',
 		guildCreated: 'Сервер создан',
@@ -73,12 +70,9 @@ export default {
 		aMode: 'About the mode:',
 		errMsg: 'Enter the number of messages.',
 		cmdList: 'The list of %author commands',
-		cmdAbout: 'Description',
-		cmdAboutMore:
-			'**Change protection mode *(Admin)*\nChange server language *(Админ)*\nThe number of your warns\nServer Information\nInvite bot to the server**',
-		deffMode: 'Protection Modes:',
+		deffMode: 'Protection Modes',
 		deffModeMore:
-			'** Low **: In case of violation deletes the message and gives 1 warn. When 3 warn are added to the black list. \n\n ** Medium **: In case of violation deletes the message and gives 1 warn. When 3 warn are added to the black list and ban on the server. \n\n ** Berserker **: In case of violation deletes the message, gives 1 warn and ban on the server. When 3 warns are added to the black list.',
+			'** Low **: In case of violation deletes the message and gives 1 warn. When 3 warn are added to the black list. \n ** Medium **: In case of violation deletes the message and gives 1 warn. When 3 warn are added to the black list and ban on the server. \n ** Berserker **: In case of violation deletes the message, gives 1 warn and ban on the server. When 3 warns are added to the black list.',
 		modeInfo: 'Server mode',
 		linkMode: 'Delete all links',
 		guildCreated: 'Server is created in',
@@ -86,8 +80,8 @@ export default {
 		botInfo:
 			"Bot that protects your server from spammers. \n**The bot uses global warns system! \nIf you're getting warned, you get it across the system!**",
 		warns: 'Warns',
-		warnsNo: 'You have no warns yet',
-		warnsCount: 'Number of your warns:',
+		warnsNo: '{member} have no warns yet',
+		warnsCount: 'Number of warns:',
 		nickUrl: 'I noticed a suspicious link in your nickname, so I changed your nickname to `Nick_URL`',
 		errEmbed: "Hmm ... An error. You didn't give me the right to send links (EMBED_LINKS)!\n** Don't do that! **",
 		permErrOwner: 'Only the Server Owner can use this command!',

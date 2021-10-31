@@ -11,7 +11,6 @@ export const commandObject = {
 			name: 'user',
 			description: 'The count of user warnings',
 			type: 6,
-			required: false,
 		},
 	],
 };
@@ -23,11 +22,11 @@ export async function run(interaction) {
 	const embed = new MessageEmbed()
 		.setColor(colors.green)
 		.setTitle(texts[interaction.guildSettings.lang].warns)
-		.setDescription(texts[interaction.guildSettings.lang].warnsNo.replace('{member}', user.tag));
+		.setDescription(texts[interaction.guildSettings.lang].warnsNo.replace('{member}', user));
 
-	if (!warns) return interaction.reply(embed);
+	if (!warns) return interaction.reply({ embeds: [embed] });
 	embed.setColor(colors.red).setDescription(`${texts[interaction.guildSettings.lang].warnsCount} **${warns.warns}**`);
-	interaction.reply(embed);
+	interaction.reply({ embeds: [embed] });
 }
 
 export default {

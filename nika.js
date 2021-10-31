@@ -4,6 +4,7 @@ import DBLAPI from 'dblapi.js';
 import readyEvent from './events/ready';
 import presenceController from './utils/presenceController';
 import postSDCStatistic from './utils/postSDCStatistic';
+import { parentPort } from 'worker_threads';
 
 const client = new Client({
 	intents: [
@@ -16,9 +17,9 @@ const client = new Client({
 });
 
 global.discordClient = client;
-global.discordWebhook = new WebhookClient({ url: process.env.WEBHOOK_URL });
+if (process.env.WEBHOOK_URL) global.discordWebhook = new WebhookClient({ url: process.env.WEBHOOK_URL });
 
-process.on('message', m => {
+parentPort.on('message', m => {
 	if (m === 'startPresence') {
 		presenceController();
 		postSDCStatistic();
@@ -27,9 +28,11 @@ process.on('message', m => {
 	}
 });
 
-const dbl = new DBLAPI(process.env.bdl, client);
-dbl.on('posted', () => console.log('Server count posted!'));
-dbl.on('error', e => console.log(`Oops! ${e}`));
+if (process.env.DBL) {
+	const dbl = new DBLAPI(process.env.DBL, client);
+	dbl.on('posted', () => console.log('Server count posted!'));
+	dbl.on('error', e => console.log(`Oops! ${e}`));
+}
 
 client.once('ready', readyEvent);
 

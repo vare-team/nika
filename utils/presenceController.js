@@ -1,6 +1,6 @@
 import db from '../services/db';
 
-let presence = 0;
+let presence = 1;
 
 export default async function () {
 	if (presence === 1) {

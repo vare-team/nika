@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js';
 import texts from '../models/texts';
 
 export const commandObject = {
-	name: 'help',
+	name: 'info',
 	description: 'Information about bot settings',
 };
 

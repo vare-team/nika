@@ -6,6 +6,13 @@ const sum = values => values.reduce((p, v) => p + v, 0);
 export const commandObject = {
 	name: 'shards',
 	description: 'All bot shards',
+	options: [
+		{
+			type: 5,
+			name: 'ephemeral',
+			description: 'Отправить эфемерно',
+		},
+	],
 };
 
 export async function run(interaction) {
