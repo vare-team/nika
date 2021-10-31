@@ -40,7 +40,7 @@ export async function run(interaction) {
 		`Серверов: \`${sum(guilds)}\`, ОЗУ: \`${sum(memory).toFixed(2)} МБ\``
 	);
 
-	await interaction.editReply({ embeds: [embed], ephemeral: interaction.options.getBoolean('ephemeral') ?? true });
+	await interaction.reply({ embeds: [embed], ephemeral: interaction.options.getBoolean('ephemeral') ?? true });
 }
 
 export default {
