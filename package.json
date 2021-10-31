@@ -17,7 +17,6 @@
 		"url": "https://github.com/vare-team/nika.git"
 	},
 	"dependencies": {
-		"dblapi.js": "^2.4.1",
 		"discord.js": "^13.2.0",
 		"mysql2": "^2.3.0",
 		"axios": "^0.23.0"
