@@ -1,3 +1,4 @@
+import { ActivityType } from 'discord.js';
 import Blacklist from '../models/blacklist.js';
 import { Op } from 'sequelize';
 
@@ -5,13 +6,15 @@ let presence = 1;
 
 export default async function () {
 	if (presence === 1) {
-		discordClient.user.setActivity('/info | /invite', { type: 'WATCHING' });
+		discordClient.user.setActivity('/info | /invite', { type: ActivityType.Watching });
 	} else if (presence === 2) {
 		const guilds = await discordClient.shard.fetchClientValues('guilds.cache.size');
-		discordClient.user.setActivity(`серверов: ${guilds.reduce((p, v) => p + v, 0)} | /help`, { type: 'WATCHING' });
+		discordClient.user.setActivity(`серверов: ${guilds.reduce((p, v) => p + v, 0)} | /help`, {
+			type: ActivityType.Watching,
+		});
 	} else if (presence === 3) {
 		const blacklist = await Blacklist.count({ where: { warns: { [Op.gt]: 2 } } });
-		await discordClient.user.setActivity(`в ЧС: ${blacklist} | /help`, { type: 'WATCHING' });
+		await discordClient.user.setActivity(`в ЧС: ${blacklist} | /help`, { type: ActivityType.Watching });
 		presence = 0;
 	}
 	presence++;
