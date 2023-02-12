@@ -18,7 +18,7 @@ export const commandObject = {
 export async function run(interaction) {
 	const embed = new EmbedBuilder()
 		.setAuthor({ name: discordClient.user.username, iconURL: discordClient.user.avatarURL() })
-		.setFooter({ name: `Шард сервера: ${discordClient.shard.ids[0]}` })
+		.setFooter({ text: `Шард сервера: ${discordClient.shard.ids[0]}` })
 		.setColor(colors.blue);
 
 	const [guilds, pings, memory] = await Promise.all([

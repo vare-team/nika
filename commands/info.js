@@ -25,7 +25,7 @@ export function run(interaction) {
 				inline: true,
 			},
 		])
-		.setFooter(texts[interaction.guildSettings.language].guildCreated)
+		.setFooter({ text: texts[interaction.guildSettings.language].guildCreated })
 		.setTimestamp(interaction.guild.createdAt)
 		.setColor(colors.blue);
 
