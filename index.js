@@ -1,6 +1,5 @@
 import { ShardingManager, fetchRecommendedShardCount } from 'discord.js';
 import log from './utils/log';
-import { initializeDbModels } from './utils/db.js';
 
 const shardManager = new ShardingManager('./nika.js', {
 	mode: 'worker',
@@ -23,17 +22,3 @@ shardManager.on('shardCreate', shard => log(`Shard spawned!`, shard.id));
 
 	for (const shard of shards) shard.postMessage('startPresence');
 })();
-
-// ==== on server start functions
-(async function initDb() {
-	try {
-		await initializeDbModels();
-	} catch (e) {
-		if (process.env.NODE_ENV !== 'test') {
-			console.log(e);
-			console.log('COULD NOT CONNECT TO THE DB, retrying in 5 seconds');
-		}
-		setTimeout(initDb, 5000);
-	}
-})();
-// ====

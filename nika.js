@@ -4,6 +4,21 @@ import readyEvent from './events/ready';
 import presenceController from './utils/presenceController';
 import postStatistic from './utils/postStatistic';
 import { parentPort } from 'worker_threads';
+import { initializeDbModels } from './utils/db.js';
+
+// ==== on server start functions
+(async function initDb() {
+	try {
+		await initializeDbModels();
+	} catch (e) {
+		if (process.env.NODE_ENV !== 'test') {
+			console.log(e);
+			console.log('COULD NOT CONNECT TO THE DB, retrying in 5 seconds');
+		}
+		setTimeout(initDb, 5000);
+	}
+})();
+// ====
 
 const client = new Client({
 	intents: [
