@@ -1,8 +1,5 @@
-import db from '../services/db';
+import Guild from '../models/guild.js';
 
 export default async function (guild) {
-	await db.query('INSERT INTO nika_server(id, lang) VALUE (?, ?)', [
-		guild.id,
-		guild.preferredLocale === 'ru' ? 'ru' : 'en',
-	]);
+	await Guild.create({ id: guild.id, language: guild.preferredLocale === 'ru' ? 'ru' : 'en' });
 }

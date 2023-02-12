@@ -1,6 +1,6 @@
-import colors from '../models/colors';
-import { MessageEmbed } from 'discord.js';
-import texts from '../models/texts';
+import colors from '../config/colors.js';
+import { EmbedBuilder } from 'discord.js';
+import texts from '../config/texts.js';
 
 export const commandObject = {
 	name: 'info',
@@ -8,22 +8,24 @@ export const commandObject = {
 };
 
 export function run(interaction) {
-	const embed = new MessageEmbed()
-		.setAuthor(interaction.guild.name, interaction.guild.iconURL())
-		.setDescription(texts[interaction.guildSettings.lang].botInfo)
-		.addField(
-			texts[interaction.guildSettings.lang].modeInfo,
-			texts[interaction.guildSettings.lang].modeName[interaction.guildSettings.level],
-			true
-		)
-		.addField(
-			`${texts[interaction.guildSettings.lang].aMode} "${
-				texts[interaction.guildSettings.lang].modeName[interaction.guildSettings.level]
-			}"`,
-			texts[interaction.guildSettings.lang].modeMore[interaction.guildSettings.level],
-			true
-		)
-		.setFooter(texts[interaction.guildSettings.lang].guildCreated)
+	const embed = new EmbedBuilder()
+		.setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
+		.setDescription(texts[interaction.guildSettings.language].botInfo)
+		.addFields([
+			{
+				name: texts[interaction.guildSettings.language].modeInfo,
+				value: texts[interaction.guildSettings.language].modeName[interaction.guildSettings.level],
+				inline: true,
+			},
+			{
+				name: `${texts[interaction.guildSettings.language].aMode} "${
+					texts[interaction.guildSettings.language].modeName[interaction.guildSettings.level]
+				}"`,
+				value: texts[interaction.guildSettings.language].modeMore[interaction.guildSettings.level],
+				inline: true,
+			},
+		])
+		.setFooter(texts[interaction.guildSettings.language].guildCreated)
 		.setTimestamp(interaction.guild.createdAt)
 		.setColor(colors.blue);
 

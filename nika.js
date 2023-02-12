@@ -1,4 +1,4 @@
-import { Client, Intents, WebhookClient } from 'discord.js';
+import { Client, GatewayIntentBits, WebhookClient } from 'discord.js';
 import log from './utils/log';
 import readyEvent from './events/ready';
 import presenceController from './utils/presenceController';
@@ -7,11 +7,11 @@ import { parentPort } from 'worker_threads';
 
 const client = new Client({
 	intents: [
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MEMBERS,
-		Intents.FLAGS.GUILD_BANS,
-		Intents.FLAGS.GUILD_INVITES,
-		Intents.FLAGS.GUILD_MESSAGES,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildInvites,
+		GatewayIntentBits.GuildMessages,
 	],
 });
 

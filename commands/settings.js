@@ -1,7 +1,6 @@
-import { MessageEmbed } from 'discord.js';
-import colors from '../models/colors';
-import texts from '../models/texts';
-import db from '../services/db';
+import { EmbedBuilder } from 'discord.js';
+import colors from '../config/colors.js';
+import texts from '../config/texts.js';
 
 export const commandObject = {
 	name: 'settings',
@@ -66,34 +65,38 @@ export async function run(interaction) {
 	}
 
 	const setting = interaction.options.getSubcommand();
-	const embed = new MessageEmbed().setAuthor(interaction.guild.name, interaction.guild.iconURL());
+	const embed = new EmbedBuilder().setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() });
 
 	if (setting === 'moderation') {
 		const newMode = interaction.options.getString('mode');
-		await db.query(`UPDATE nika_server SET level = ? WHERE id = ?`, [newMode, interaction.guildId]);
+		await interaction.guildSettings.update({ level: newMode });
 
 		embed
-			.setTitle(texts[interaction.guildSettings.lang].modeChanged)
-			.addField(
-				texts[interaction.guildSettings.lang].mode,
-				texts[interaction.guildSettings.lang].modeName[newMode],
-				true
-			)
-			.addField(
-				`${texts[interaction.guildSettings.lang].aMode} "${texts[interaction.guildSettings.lang].modeName[newMode]}":`,
-				texts[interaction.guildSettings.lang].modeMore[newMode],
-				true
-			)
+			.setTitle(texts[interaction.guildSettings.language].modeChanged)
+			.addFields([
+				{
+					name: texts[interaction.guildSettings.language].mode,
+					value: texts[interaction.guildSettings.language].modeName[newMode],
+					inline: true,
+				},
+				{
+					name: `${texts[interaction.guildSettings.language].aMode} "${
+						texts[interaction.guildSettings.language].modeName[newMode]
+					}":`,
+					value: texts[interaction.guildSettings.language].modeMore[newMode],
+					inline: true,
+				},
+			])
 			.setColor(colors.blue);
 	}
 
 	if (setting === 'language') {
 		const newLanguage = interaction.options.getString('language');
-		await db.query(`UPDATE nika_server SET lang = ? WHERE id = ?`, [newLanguage, interaction.guildId]);
+		await interaction.guildSettings.update({ language: newLanguage });
 
 		embed
 			.setTitle(texts[newLanguage].langChanged)
-			.addField(texts[newLanguage].lang, newLanguage, true)
+			.addFields([{ name: texts[newLanguage].lang, value: newLanguage, inline: true }])
 			.setColor(colors.blue);
 	}
 

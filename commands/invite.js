@@ -1,6 +1,6 @@
-import colors from '../models/colors';
-import { MessageEmbed } from 'discord.js';
-import texts from '../models/texts';
+import colors from '../config/colors.js';
+import { EmbedBuilder } from 'discord.js';
+import texts from '../config/texts.js';
 
 export const commandObject = {
 	name: 'invite',
@@ -8,9 +8,9 @@ export const commandObject = {
 };
 
 export function run(interaction) {
-	const embed = new MessageEmbed()
-		.setAuthor(discordClient.user.tag, discordClient.user.displayAvatarURL())
-		.setTitle(texts[interaction.guildSettings.lang].botInvite)
+	const embed = new EmbedBuilder()
+		.setAuthor({ name: discordClient.user.tag, iconURL: discordClient.user.displayAvatarURL() })
+		.setTitle(texts[interaction.guildSettings.language].botInvite)
 		.setURL(
 			'https://discord.com/oauth2/authorize?client_id=543858333585506315&scope=bot+applications.commands&permissions=8'
 		)

@@ -4,7 +4,7 @@ import log from '../utils/log';
 const sdcInstance = axios.create({
 	method: 'POST',
 	baseURL: 'https://api.server-discord.com/v2/bots',
-	headers: { authorization: 'SDC ' + process.env.SDC },
+	headers: { authorization: `SDC ${process.env.SDC}` },
 });
 
 const topInstance = axios.create({
@@ -18,9 +18,9 @@ export default async function () {
 	const servers = await discordClient.shard.fetchClientValues('guilds.cache.size');
 	if (process.env.SDC)
 		sdcInstance({
-			url: discordClient.user.id + '/stats',
+			url: `${discordClient.user.id}/stats`,
 			data: { servers: servers.reduce((p, v) => p + v, 0), shards: discordClient.shard.count },
 		});
-	if (process.env.DBL) topInstance({ url: discordClient.user.id + '/stats', data: { shards: servers } });
+	if (process.env.DBL) topInstance({ url: `${discordClient.user.id}/stats`, data: { shards: servers } });
 	log('{SDC} Send stats data.');
 }

@@ -1,7 +1,7 @@
-import db from '../services/db';
-import { MessageEmbed } from 'discord.js';
-import texts from '../models/texts';
-import colors from '../models/colors';
+import { EmbedBuilder } from 'discord.js';
+import texts from '../config/texts.js';
+import colors from '../config/colors.js';
+import Blacklist from '../models/blacklist.js';
 
 export const commandObject = {
 	name: 'warns',
@@ -17,15 +17,17 @@ export const commandObject = {
 
 export async function run(interaction) {
 	const user = interaction.options.getUser('user') ?? interaction.user;
-	const warns = await db.one('SELECT warns FROM blacklist WHERE id = ?', [user.id]);
+	const warns = await Blacklist.findByPk(user.id);
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setColor(colors.green)
-		.setTitle(texts[interaction.guildSettings.lang].warns)
-		.setDescription(texts[interaction.guildSettings.lang].warnsNo.replace('{member}', user));
+		.setTitle(texts[interaction.guildSettings.language].warns)
+		.setDescription(texts[interaction.guildSettings.language].warnsNo.replace('{member}', user));
 
 	if (!warns) return interaction.reply({ embeds: [embed] });
-	embed.setColor(colors.red).setDescription(`${texts[interaction.guildSettings.lang].warnsCount} **${warns.warns}**`);
+	embed
+		.setColor(colors.red)
+		.setDescription(`${texts[interaction.guildSettings.language].warnsCount} **${warns.warns}**`);
 	interaction.reply({ embeds: [embed] });
 }
 

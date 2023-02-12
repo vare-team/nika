@@ -1,4 +1,5 @@
-import db from '../services/db';
+import Blacklist from '../models/blacklist.js';
+import { Op } from 'sequelize';
 
 let presence = 1;
 
@@ -9,8 +10,8 @@ export default async function () {
 		const guilds = await discordClient.shard.fetchClientValues('guilds.cache.size');
 		discordClient.user.setActivity(`серверов: ${guilds.reduce((p, v) => p + v, 0)} | /help`, { type: 'WATCHING' });
 	} else if (presence === 3) {
-		const blacklist = await db.one('SELECT COUNT(*) as count FROM blacklist WHERE warns > 2');
-		await discordClient.user.setActivity(`в ЧС: ${blacklist.count} | /help`, { type: 'WATCHING' });
+		const blacklist = await Blacklist.count({ where: { warns: { [Op.gt]: 2 } } });
+		await discordClient.user.setActivity(`в ЧС: ${blacklist} | /help`, { type: 'WATCHING' });
 		presence = 0;
 	}
 	presence++;

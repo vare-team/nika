@@ -1,5 +1,5 @@
-import db from '../services/db';
+import Guild from '../models/guild.js';
 
 export default async function (guild) {
-	await db.query('DELETE FROM nika_server WHERE id = ?', [guild.id]);
+	await Guild.destroy({ where: { id: guild.id } });
 }

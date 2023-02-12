@@ -1,5 +1,5 @@
-import { MessageEmbed } from 'discord.js';
-import colors from '../models/colors';
+import { EmbedBuilder } from 'discord.js';
+import colors from '../config/colors.js';
 
 const sum = values => values.reduce((p, v) => p + v, 0);
 
@@ -16,9 +16,9 @@ export const commandObject = {
 };
 
 export async function run(interaction) {
-	const embed = new MessageEmbed()
-		.setAuthor(discordClient.user.username, discordClient.user.avatarURL())
-		.setFooter(`Шард сервера: ${discordClient.shard.ids[0]}`)
+	const embed = new EmbedBuilder()
+		.setAuthor({ name: discordClient.user.username, iconURL: discordClient.user.avatarURL() })
+		.setFooter({ name: `Шард сервера: ${discordClient.shard.ids[0]}` })
 		.setColor(colors.blue);
 
 	const [guilds, pings, memory] = await Promise.all([
@@ -28,17 +28,21 @@ export async function run(interaction) {
 	]);
 
 	for (let i = 0, length = discordClient.shard.count; i < length; i++) {
-		embed.addField(
-			`${i + 1}. ${i} ${i === discordClient.shard.ids[0] ? '←' : ''}`,
-			`Серверов: \`${guilds[i]}\`, Пинг: \`${pings[i]} мс\`, ОЗУ: \`${memory[i]} МБ\``
-		);
+		embed.addFields([
+			{
+				name: `${i + 1}. ${i} ${i === discordClient.shard.ids[0] ? '←' : ''}`,
+				value: `Серверов: \`${guilds[i]}\`, Пинг: \`${pings[i]} мс\`, ОЗУ: \`${memory[i]} МБ\``,
+			},
+		]);
 	}
 
-	embed.addField('​', '​');
-	embed.addField(
-		`Всего: ${discordClient.shard.count}`,
-		`Серверов: \`${sum(guilds)}\`, ОЗУ: \`${sum(memory).toFixed(2)} МБ\``
-	);
+	embed.addFields([
+		{ name: '​', value: '​' },
+		{
+			name: `Всего: ${discordClient.shard.count}`,
+			value: `Серверов: \`${sum(guilds)}\`, ОЗУ: \`${sum(memory).toFixed(2)} МБ\``,
+		},
+	]);
 
 	await interaction.reply({ embeds: [embed], ephemeral: interaction.options.getBoolean('ephemeral') ?? true });
 }
