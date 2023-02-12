@@ -3,6 +3,7 @@ import isInvite from '../utils/getInvite';
 import Blacklist from '../models/blacklist.js';
 import { Op } from 'sequelize';
 import Guild from '../models/guild.js';
+import { PermissionFlagsBits } from 'discord.js';
 
 export default async function (member) {
 	if (member.user.bot) return;
@@ -17,7 +18,7 @@ export default async function (member) {
 		return;
 	}
 
-	if (!isInvite(member.user.username) || !member.guild.me?.permissions.has('MANAGE_NICKNAMES')) return;
+	if (!isInvite(member.user.username) || !member.guild.me?.permissions.has(PermissionFlagsBits.ManageNicknames)) return;
 	member.send(texts[guildSettings.language].nickUrl);
 	await member.setNickname('URL_in_Nickname');
 }

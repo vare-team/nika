@@ -1,6 +1,6 @@
 import texts from '../config/texts.js';
 import getInvite from './getInvite';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import colors from '../config/colors.js';
 import log from './log';
 import ignoreGuildsList from '../config/ignoreGuildsList.js';
@@ -37,16 +37,16 @@ export default async function (message) {
 	if (
 		message.channel.id === guildSettings?.channel ||
 		guildMember?.permissions.any([
-			'ADMINISTRATOR',
-			'MANAGE_ROLES',
-			'MANAGE_MESSAGES',
-			'KICK_MEMBERS',
-			'BAN_MEMBERS',
-			'VIEW_AUDIT_LOG',
-			'MUTE_MEMBERS',
-			'DEAFEN_MEMBERS',
-			'MOVE_MEMBERS',
-			'MANAGE_NICKNAMES',
+			PermissionFlagsBits.Administrator,
+			PermissionFlagsBits.ManageRoles,
+			PermissionFlagsBits.ManageMessages,
+			PermissionFlagsBits.KickMembers,
+			PermissionFlagsBits.BanMembers,
+			PermissionFlagsBits.ViewAuditLog,
+			PermissionFlagsBits.MuteMembers,
+			PermissionFlagsBits.DeafenMembers,
+			PermissionFlagsBits.MoveMembers,
+			PermissionFlagsBits.ManageNicknames,
 		])
 	)
 		return;

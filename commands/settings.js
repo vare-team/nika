@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import colors from '../config/colors.js';
 import texts from '../config/texts.js';
 
@@ -60,7 +60,7 @@ export const commandObject = {
 };
 
 export async function run(interaction) {
-	if (!interaction.member.permissions.has('ADMINISTRATOR')) {
+	if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
 		return;
 	}
 
