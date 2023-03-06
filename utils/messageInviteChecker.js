@@ -16,11 +16,9 @@ const hasInvite = async (invite, guildId) => {
 export default async function (message) {
 	if (message.author.bot || message.channel.type === 'DM') return;
 
-	// eslint-disable-next-line prefer-const
-	let [userWarns, guildSettings, guildMember] = await Promise.all([
+	let [userWarns, guildSettings] = await Promise.all([
 		Blacklist.findByPk(message.author.id),
 		Guild.findByPk(message.guild.id),
-		...(message.member ? [Promise.resolve(message.member)] : [message.guild.members.fetch(message.author.id)]),
 	]);
 
 	if (!guildSettings) {
@@ -32,11 +30,11 @@ export default async function (message) {
 	if (!userWarns) userWarns = { warns: 0 };
 
 	if (userWarns.warns > 2 && (guildSettings.level === 'berserker' || guildSettings.level === 'medium'))
-		guildMember.ban(texts[guildSettings.language].banSpam).catch(() => {});
+		message.member.ban(texts[guildSettings.language].banSpam).catch(() => {});
 
 	if (
 		message.channel.id === guildSettings?.channel ||
-		guildMember?.permissions.any([
+		message.member?.permissions.any([
 			PermissionFlagsBits.Administrator,
 			PermissionFlagsBits.ManageRoles,
 			PermissionFlagsBits.ManageMessages,
@@ -75,7 +73,7 @@ export default async function (message) {
 	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns });
 
 	if ((userWarns.warns > 2 && guildSettings.level === 'medium') || guildSettings.level === 'berserker')
-		guildMember.ban(texts[guildSettings.language].banSpam).catch(() => {});
+		message.member.ban(texts[guildSettings.language].banSpam).catch(() => {});
 
 	const spammessage = await message.channel
 		.send(texts[guildSettings.language].msgNoInvitePubl.replace('%author', message.author))
