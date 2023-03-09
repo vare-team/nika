@@ -64,7 +64,7 @@ export async function run(interaction) {
 		return;
 	}
 
-	if (!interaction.guildSettings) {
+	if (!interaction.guildSettings || !(interaction.guildSettings instanceof Guild)) {
 		const language = interaction.guild?.preferredLocale === 'ru' ? 'ru' : 'en';
 		interaction.guildSettings = await Guild.create({ id: interaction.guildId, language: language });
 	}
