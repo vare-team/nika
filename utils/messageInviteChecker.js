@@ -20,7 +20,7 @@ export default async function (message) {
 
 	await tryPunish(userWarns, guildSettings, message);
 
-	if (await isWhitelistedOrNoInvite()) return;
+	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;
 
 	userWarns.warns++;
 
