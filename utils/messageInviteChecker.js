@@ -24,7 +24,7 @@ export default async function (message) {
 
 	userWarns.warns++;
 
-	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns });
+	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns }).catch(() => {});
 	await sendWebhook(message);
 	await tryPunish(userWarns, guildSettings, message);
 
