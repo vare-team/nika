@@ -38,9 +38,7 @@ export async function tryPunish(userWarns, guildSettings, message) {
 		(userWarns.warns > 0 && guildSettings.level === 'berserker') ||
 		(userWarns.warns > 2 && guildSettings.level === 'medium')
 	)
-		await message.member.ban(texts[guildSettings.language].banSpam).catch(() => {
-			log(`Error ban execution fail | ${message.author.id} ${message.guild.id} | ${guildSettings.level}`);
-		});
+		await message.member.ban(texts[guildSettings.language].banSpam).catch(() => {});
 }
 
 export async function sendWebhook(message) {
