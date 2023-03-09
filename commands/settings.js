@@ -1,5 +1,5 @@
 import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import Guild from '../models/guild';
+import Guild from '../models/guild.js';
 import colors from '../config/colors.js';
 import texts from '../config/texts.js';
 
