@@ -39,7 +39,7 @@ export async function tryPunish(userWarns, guildSettings, message) {
 		(userWarns.warns > 2 && guildSettings.level === 'medium')
 	)
 		await message.member.ban(texts[guildSettings.language].banSpam).catch(() => {
-			log(`Error ban execution fail | ${message.id} | ${guildSettings.level}`);
+			log(`Error ban execution fail | ${message.author.id} ${message.guild.id} | ${guildSettings.level}`);
 		});
 }
 
