@@ -20,11 +20,11 @@ export default async function (message) {
 
 	await tryPunish(userWarns, guildSettings, message);
 
-	if (await isWhitelistedOrNoInvite()) return;
+	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;
 
 	userWarns.warns++;
 
-	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns });
+	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns }).catch(() => {});
 	await sendWebhook(message);
 	await tryPunish(userWarns, guildSettings, message);
 
