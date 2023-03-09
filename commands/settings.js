@@ -1,4 +1,4 @@
-import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { EmbedBuilder, Guild, PermissionFlagsBits } from 'discord.js';
 import colors from '../config/colors.js';
 import texts from '../config/texts.js';
 
@@ -62,6 +62,12 @@ export const commandObject = {
 export async function run(interaction) {
 	if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
 		return;
+	}
+
+	if (!interaction.guildSettings) {
+		const language = interaction.guild?.preferredLocale === 'ru' ? 'ru' : 'en';
+		await Guild.create({ id: interaction.guildId, language: language });
+		interaction.guildSettings = { language, level: 'medium' };
 	}
 
 	const setting = interaction.options.getSubcommand();

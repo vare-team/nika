@@ -23,7 +23,6 @@ export default async function (message) {
 
 	if (!guildSettings) {
 		const language = message.guild.preferredLocale === 'ru' ? 'ru' : 'en';
-		await Guild.create({ id: message.guild.id, language });
 		guildSettings = { language, level: 'medium' };
 	}
 
