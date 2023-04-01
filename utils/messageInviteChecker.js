@@ -1,11 +1,15 @@
 import texts from '../config/texts.js';
-import { ChannelType } from 'discord.js';
 import Blacklist from '../models/blacklist.js';
 import Guild from '../models/guild.js';
 import { isWhitelistedOrNoInvite, sendWebhook, tryPunish } from './inviteCheckerUtils.js';
 
+/**
+ *
+ * @param message {Message}
+ * @return {Promise<void>}
+ */
 export default async function (message) {
-	if (message.author.bot || message.channel.type === ChannelType.DM) return;
+	if (message.author.bot || !message.inGuild()) return;
 
 	let [userWarns, guildSettings] = await Promise.all([
 		Blacklist.findByPk(message.author.id),
@@ -14,11 +18,9 @@ export default async function (message) {
 
 	if (!guildSettings) {
 		const language = message.guild.preferredLocale === 'ru' ? 'ru' : 'en';
-		guildSettings = { language, level: 'medium' };
+		guildSettings = { language: language, level: 'medium' };
 	}
 	if (!userWarns) userWarns = { warns: 0 };
-
-	await tryPunish(userWarns, guildSettings, message);
 
 	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;
 
@@ -26,7 +28,7 @@ export default async function (message) {
 
 	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns }).catch(() => {});
 	await sendWebhook(message);
-	await tryPunish(userWarns, guildSettings, message);
+	await tryPunish(userWarns.warns, guildSettings, message.member);
 
 	const spamMessage = await message.channel
 		.send(texts[guildSettings.language].msgNoInvitePubl.replace('%author', message.author))
