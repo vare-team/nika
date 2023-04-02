@@ -42,11 +42,9 @@ export async function isWhitelistedOrNoInvite(message, guildSettings) {
  */
 export async function tryPunish(warns, guildSettings, message) {
 	if ((warns > 0 && guildSettings.level === 'berserker') || (warns > 2 && guildSettings.level === 'medium')) {
-		if (message.member) await message.ban(texts[guildSettings.language].banSpam).catch(() => {});
-		else
-			await message.guild.members
-				.ban(message.author, { reason: texts[guildSettings.language].banSpam })
-				.catch(() => {});
+		await message.guild.members
+			.ban(message?.member ?? message.author, { reason: texts[guildSettings.language].banSpam })
+			.catch(() => {});
 	}
 }
 
