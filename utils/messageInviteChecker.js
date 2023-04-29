@@ -28,10 +28,10 @@ export default async function (message) {
 
 	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns }).catch(() => {});
 	await sendWebhook(message);
-	await tryPunish(userWarns.warns, guildSettings, message.member);
+	await tryPunish(userWarns.warns, guildSettings, message);
 
 	const spamMessage = await message.channel
-		.send(texts[guildSettings.language].msgNoInvitePubl.replace('%author', message.author))
+		.send(texts[guildSettings.language].msgNoInvitePubl.replace('%author', message.author.toString()))
 		.catch(() => {});
 
 	if (spamMessage) setTimeout(() => spamMessage.delete().catch(() => {}), 1e4);
