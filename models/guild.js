@@ -1,6 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 
 export default class Guild extends Model {
+	static getLocale(language) {
+		return language === 'ru' ? 'ru' : 'en';
+	}
+	static getDefault(language) {
+		return { level: 'medium', language: language };
+	}
 	static initialize(sequelize) {
 		Guild.init(
 			{

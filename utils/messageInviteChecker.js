@@ -16,11 +16,8 @@ export default async function (message) {
 		Guild.findByPk(message.guild.id),
 	]);
 
-	if (!guildSettings) {
-		const language = message.guild.preferredLocale === 'ru' ? 'ru' : 'en';
-		guildSettings = { language: language, level: 'medium' };
-	}
-	if (!userWarns) userWarns = { warns: 0 };
+	guildSettings ??= Guild.getDefault(Guild.getLocale(message.guild.preferredLocale));
+	userWarns ??= Blacklist.getDefault(message.author.id);
 
 	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;
 

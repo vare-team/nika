@@ -13,10 +13,10 @@ export default async function (member) {
 		Guild.findByPk(member.guild.id),
 	]);
 
-	if (warns && (guildSettings.level === 'berserker' || guildSettings.level === 'medium')) {
-		member.ban(texts[guildSettings.language].banSpam).catch(() => {});
-		return;
-	}
+	warns ??= Blacklist.getDefault(member.id);
+	guildSettings ??= Guild.getDefault(Guild.getLocale(member.guild?.preferredLocale));
+
+	await tryPunish(warns.warns, guildSettings, member);
 
 	if (!isInvite(member.user.username) || !member.guild.me?.permissions.has(PermissionFlagsBits.ManageNicknames)) return;
 	member.send(texts[guildSettings.language].nickUrl);
