@@ -4,19 +4,20 @@ import Blacklist from '../models/blacklist.js';
 import { Op } from 'sequelize';
 import Guild from '../models/guild.js';
 import { PermissionFlagsBits } from 'discord.js';
+import { tryPunish } from '../utils/inviteCheckerUtils.js';
 
 export default async function (member) {
 	if (member.user.bot) return;
 
-	const [warns, guildSettings] = await Promise.all([
+	let [warns, guildSettings] = await Promise.all([
 		Blacklist.findOne({ where: { id: member.id, warns: { [Op.gt]: 2 } } }),
 		Guild.findByPk(member.guild.id),
 	]);
 
-	if (warns && (guildSettings.level === 'berserker' || guildSettings.level === 'medium')) {
-		member.ban(texts[guildSettings.language].banSpam).catch(() => {});
-		return;
-	}
+	warns ??= Blacklist.getDefault(member.id);
+	guildSettings ??= Guild.getDefault(Guild.getLocale(member.guild?.preferredLocale));
+
+	await tryPunish(warns.warns, guildSettings, member);
 
 	if (!isInvite(member.user.username) || !member.guild.me?.permissions.has(PermissionFlagsBits.ManageNicknames)) return;
 	member.send(texts[guildSettings.language].nickUrl);

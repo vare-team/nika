@@ -7,11 +7,7 @@ export default async function (interaction) {
 
 	const command = commands[interaction.commandName];
 	interaction.guildSettings = await Guild.findByPk(interaction.guildId);
-
-	if (!interaction.guildSettings) {
-		const language = interaction.guild?.preferredLocale === 'ru' ? 'ru' : 'en';
-		interaction.guildSettings = { language, level: 'medium' };
-	}
+	interaction.guildSettings ??= Guild.getDefault(Guild.getLocale(interaction.guild?.preferredLocale));
 
 	try {
 		await command.run(interaction);

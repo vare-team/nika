@@ -1,6 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
 
 export default class Blacklist extends Model {
+	static getDefault(id) {
+		return {
+			id: id,
+			type: 'user',
+			warns: 0,
+		};
+	}
 	static initialize(sequelize) {
 		Blacklist.init(
 			{

@@ -16,11 +16,8 @@ export default async function (message) {
 		Guild.findByPk(message.guild.id),
 	]);
 
-	if (!guildSettings) {
-		const language = message.guild.preferredLocale === 'ru' ? 'ru' : 'en';
-		guildSettings = { language: language, level: 'medium' };
-	}
-	if (!userWarns) userWarns = { warns: 0 };
+	guildSettings ??= Guild.getDefault(Guild.getLocale(message.guild.preferredLocale));
+	userWarns ??= Blacklist.getDefault(message.author.id);
 
 	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;
 
@@ -28,7 +25,7 @@ export default async function (message) {
 
 	await Blacklist.upsert({ id: message.author.id, warns: userWarns.warns }).catch(() => {});
 	await sendWebhook(message);
-	await tryPunish(userWarns.warns, guildSettings, message);
+	await tryPunish(userWarns.warns, guildSettings, message.member);
 
 	const spamMessage = await message.channel
 		.send(texts[guildSettings.language].msgNoInvitePubl.replace('%author', message.author.toString()))
