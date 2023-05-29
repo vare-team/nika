@@ -1,0 +1,35 @@
+{
+	"name": "nika-api",
+	"version": "1.0.0",
+	"license": "MIT",
+	"author": "Vare (https://vare.pw/)",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"start": "node .",
+		"debug": "nodemon .",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
+	},
+	"engines": {
+		"node": ">=16"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vare-team/nika.git"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
+		"sequelize": "^6.31.1",
+		"mariadb": "^3.1.2",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"eslint": "^8.41.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"nodemon": "^2.0.22",
+		"prettier": "^2.8.8"
+	}
+}
