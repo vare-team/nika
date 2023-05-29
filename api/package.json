@@ -6,8 +6,8 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"start": "node --experimental-specifier-resolution=node ..",
-		"debug": "nodemon --experimental-specifier-resolution=node .",
+		"start": "node .",
+		"debug": "nodemon .",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix"
 	},
