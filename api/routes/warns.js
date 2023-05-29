@@ -6,7 +6,8 @@ import getBlacklisted from '../controllers/get-blacklisted.js';
 
 const router = new Router();
 
-router.route('/').get(asyncRoute(getWarns)).post(asyncRoute(setWarns));
-router.route('/count').get(asyncRoute(getBlacklisted));
+router.route('/').get(asyncRoute(getBlacklisted));
+
+router.route('/:entityId').get(asyncRoute(getWarns)).put(asyncRoute(setWarns));
 
 export default router;

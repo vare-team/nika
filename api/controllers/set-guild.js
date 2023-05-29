@@ -7,8 +7,9 @@ import Guild from '../models/guild.js';
  * @param res
  * @return {Promise<void>}
  */
-export default async function ({ body: cfg }, res) {
+export default async function ({ params: { guildId }, body: cfg }, res) {
 	if (!cfg.id) throw new AppErrorMissing('id');
+	if (cfg.id !== guildId) throw new AppErrorInvalid('id');
 
 	await Guild.update({ [cfg.id]: cfg }, null);
 	res.end();

@@ -8,9 +8,10 @@ import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
  * @param res
  * @return {Promise<void>}
  */
-export default async function ({ query: { guildId, language } }, res) {
+export default async function ({ params: { guildId }, query: { language } }, res) {
 	if (!guildId) throw new AppErrorMissing('guildId');
 	if (!language) throw new AppErrorMissing('language');
+	if (!languages.includes(language)) throw new AppErrorInvalid('language');
 
 	if (guildId.length <= 16 || guildId.length > 20) throw new AppErrorInvalid('guildId');
 	if (language.length <= 2) throw new AppErrorInvalid('language');
