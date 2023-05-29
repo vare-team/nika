@@ -1,9 +1,9 @@
 import { EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import colors from '../config/colors.js';
 import texts from '../config/texts.js';
-import Guild from '../models/Guild.js';
+import Guilds from '../models/Guilds.js';
 import getGuildConfig from '../services/get-guild-config.js';
-import setGuildConfig from '../services/set-guild-config.js';
+import setGuildConfig from '../utils/set-guild-config.js';
 
 export const commandObject = {
 	name: 'settings',
@@ -67,10 +67,10 @@ export async function run(interaction) {
 		return;
 	}
 
-	if (!interaction.guildSettings || !(interaction.guildSettings instanceof Guild)) {
+	if (!interaction.guildSettings || !(interaction.guildSettings instanceof Guilds)) {
 		interaction.guildSettings = await getGuildConfig(
 			interaction.guildId,
-			Guild.getLocale(interaction.guild?.preferredLocale)
+			Guilds.getLocale(interaction.guild?.preferredLocale)
 		);
 	}
 

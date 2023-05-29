@@ -4,14 +4,14 @@ import { PermissionFlagsBits } from 'discord.js';
 import { tryPunish } from '../utils/inviteCheckerUtils.js';
 import getUserWarns from '../services/get-user-warns.js';
 import getGuildConfig from '../services/get-guild-config.js';
-import Guild from '../models/Guild.js';
+import Guilds from '../models/Guilds.js';
 
 export default async function (member) {
 	if (member.user.bot) return;
 
 	const [warns, guildSettings] = await Promise.all([
-		await getUserWarns(member.id),
-		await getGuildConfig(member.guild.id, Guild.getLocale(member.guild?.preferredLocale)),
+		getUserWarns(member.id),
+		getGuildConfig(member.guild.id, Guilds.getLocale(member.guild?.preferredLocale)),
 	]);
 
 	await tryPunish(warns.warns, guildSettings, member);

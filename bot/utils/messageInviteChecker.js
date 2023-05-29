@@ -1,9 +1,9 @@
 import texts from '../config/texts.js';
 import { isWhitelistedOrNoInvite, sendWebhook, tryPunish } from './inviteCheckerUtils.js';
 import getGuildConfig from '../services/get-guild-config.js';
-import Guild from '../models/Guild.js';
+import Guilds from '../models/Guilds.js';
 import getUserWarns from '../services/get-user-warns.js';
-import setUserWarns from '../services/set-user-warns.js';
+import setUserWarns from './set-user-warns.js';
 
 /**
  *
@@ -14,8 +14,8 @@ export default async function (message) {
 	if (message.author.bot || !message.inGuild()) return;
 
 	const [userWarns, guildSettings] = await Promise.all([
-		await getUserWarns(message.author.id),
-		getGuildConfig(message.guild.id.toString(), Guild.getLocale(message.guild.preferredLocale)),
+		getUserWarns(message.author.id.toString()),
+		getGuildConfig(message.guild.id.toString(), Guilds.getLocale(message.guild.preferredLocale)),
 	]);
 
 	if (await isWhitelistedOrNoInvite(message, guildSettings)) return;

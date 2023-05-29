@@ -1,7 +1,7 @@
 import commands from '../commands/index.js';
 import log from '../utils/log.js';
 import getGuildConfig from '../services/get-guild-config.js';
-import Guild from '../models/Guild.js';
+import Guilds from '../models/Guilds.js';
 
 export default async function (interaction) {
 	if (!interaction.inGuild() || !interaction.isCommand()) return;
@@ -9,7 +9,7 @@ export default async function (interaction) {
 	const command = commands[interaction.commandName];
 	interaction.guildSettings = await getGuildConfig(
 		interaction.guildId,
-		Guild.getLocale(interaction.guild?.preferredLocale)
+		Guilds.getLocale(interaction.guild?.preferredLocale)
 	);
 
 	try {
