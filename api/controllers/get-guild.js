@@ -15,5 +15,5 @@ export default async function ({ params: { guildId }, query: { language } }, res
 	if (!languages.includes(language)) throw new AppErrorInvalid('language');
 
 	const result = await Guild.findByPk(guildId);
-	res.json(result ?? Guild.getDefault(language));
+	res.json(result ?? Guild.getDefault(guildId, language));
 }
