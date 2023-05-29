@@ -31,11 +31,5 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodemon": "^2.0.22",
 		"prettier": "^2.8.8"
-	},
-	"optionalDependencies": {
-		"bufferutil": "^4.0.7",
-		"erlpack": "github:discord/erlpack",
-		"utf-8-validate": "^6.0.3",
-		"zlib-sync": "^0.1.8"
 	}
 }
