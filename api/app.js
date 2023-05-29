@@ -2,8 +2,8 @@ import express from 'express';
 import logger from 'morgan';
 import { initializeDbModels } from './utils/db.js';
 import { AppError, errorCodes, SystemError } from './utils/errors.js';
-import guild from './routes/guild.js';
-import blacklist from './routes/blacklist.js';
+import guild from './routes/guilds.js';
+import blacklist from './routes/warns.js';
 
 const port = Number(process.env.PORT) ?? 3000;
 const app = express();
@@ -42,8 +42,8 @@ if (app.get('env') === 'production') {
 
 app.use(express.json()).use(express.urlencoded({ extended: true }));
 
-app.use('/guild', guild);
-app.use('/blacklist', blacklist);
+app.use('/guilds', guild);
+app.use('/warns', blacklist);
 
 app
 	.use((req, res) => res.status(404).json({ error: { type: 'NOT FOUND', code: 404 } }))

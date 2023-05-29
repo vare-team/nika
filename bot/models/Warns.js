@@ -1,8 +1,8 @@
-export default class Blacklist {
+export default class Warns {
 	/**
 	 *
 	 * @param id {string}
-	 * @param type {'user'}
+	 * @param type {string}
 	 * @param warns {number}
 	 */
 	constructor({ id, type, warns }) {

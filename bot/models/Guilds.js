@@ -1,4 +1,4 @@
-export default class Guild {
+export default class Guilds {
 	/**
 	 *
 	 * @param id {string}

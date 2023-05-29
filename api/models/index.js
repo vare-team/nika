@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import Guild from './guild.js';
-import Blacklist from './blacklist.js';
+import Blacklist from './warn.js';
 
 const { DB_NAME, DB_USER, DB_PWD, DB_HOST } = process.env;
 

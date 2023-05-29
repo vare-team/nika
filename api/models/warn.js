@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import toSnakeCase from '../utils/to-snake-case.js';
 
-export default class Blacklist extends Model {
+export default class Warn extends Model {
 	static getDefault(id) {
 		return {
 			id: id,
@@ -10,7 +10,7 @@ export default class Blacklist extends Model {
 		};
 	}
 	static initialize(sequelize) {
-		Blacklist.init(
+		Warn.init(
 			{
 				id: { type: DataTypes.STRING, primaryKey: true },
 
@@ -20,7 +20,7 @@ export default class Blacklist extends Model {
 			{
 				sequelize,
 				modelName: this.name,
-				tableName: toSnakeCase(this.name),
+				tableName: toSnakeCase(`${this.name}s`),
 			}
 		);
 	}
