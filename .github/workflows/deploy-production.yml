@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  deploy:
-    name: Deploy
+  deploy_bot:
+    name: Deploy bot
     runs-on: self-hosted
 
     steps:
@@ -21,5 +21,25 @@ jobs:
           script: |
             cd nika
             git pull origin master
+            cd bot
             npm ci --production
-            pm2 restart nika
+            pm2 restart nika-bot
+
+  deploy_api:
+    name: Deploy api
+    runs-on: self-hosted
+
+    steps:
+      - name: Connect to server
+        uses: appleboy/ssh-action@b87ddeff0013ea4c509514f51dd2d3f4eaf0e1d8
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd nika
+            git pull origin master
+            cd api
+            npm ci --production
+            pm2 restart nika-api

@@ -3,8 +3,8 @@ import toSnakeCase from '../utils/to-snake-case.js';
 import languages from '../configs/languages.js';
 
 export default class Guild extends Model {
-	static getDefault(language) {
-		return { level: 'medium', language: language };
+	static getDefault(id, language) {
+		return { id: id, level: 'medium', language: language };
 	}
 	static initialize(sequelize) {
 		Guild.init(
