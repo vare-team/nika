@@ -1,7 +1,7 @@
-import Blacklist from '../models/blacklist.js';
+import Warn from '../models/warn.js';
 import { Op } from 'sequelize';
 
 export default async function (req, res) {
-	const count = (await Blacklist.count({ where: { warns: { [Op.gt]: 2 } } })) ?? 0;
-	res.json({ count });
+	const count = await Warn.count({ where: { warns: { [Op.gt]: 2 } } });
+	res.json({ count: count ?? 0 });
 }

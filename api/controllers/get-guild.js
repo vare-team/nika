@@ -1,5 +1,6 @@
 import Guild from '../models/guild.js';
 import { AppErrorInvalid, AppErrorMissing } from '../utils/errors.js';
+import languages from '../configs/languages.js';
 
 /**
  *
@@ -13,9 +14,6 @@ export default async function ({ params: { guildId }, query: { language } }, res
 	if (!language) throw new AppErrorMissing('language');
 	if (!languages.includes(language)) throw new AppErrorInvalid('language');
 
-	if (guildId.length <= 16 || guildId.length > 20) throw new AppErrorInvalid('guildId');
-	if (language.length <= 2) throw new AppErrorInvalid('language');
-
-	const result = (await Guild.findByPk(guildId)) ?? Guild.getDefault(language);
-	res.json(result);
+	const result = await Guild.findByPk(guildId);
+	res.json(result ?? Guild.getDefault(language));
 }
